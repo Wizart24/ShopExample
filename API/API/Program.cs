@@ -1,5 +1,6 @@
 
 using API.Data;
+using API.Services.ItemService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -36,6 +37,7 @@ namespace API
 
 			builder.Services.AddAutoMapper(typeof(Program).Assembly);
 			builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+			builder.Services.AddScoped<IItemService, ItemService>();
 
 			builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddJwtBearer(options =>
