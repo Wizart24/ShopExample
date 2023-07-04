@@ -41,5 +41,51 @@ namespace API.Services.ItemService
 
 			return response;
 		}
+
+		public async Task<ServiceResponse<GetItemDto>> GetItem(int id)
+		{
+			var response = new ServiceResponse<GetItemDto>();
+			var item = await _context.Items.FirstOrDefaultAsync(x => x.Id == id);
+
+			if (item is not null)
+			{
+				response.Data = _mapper.Map<GetItemDto>(item);
+			}
+
+			return response;
+		}
+
+		public async Task<ServiceResponse<GetItemDto>> UpdateItem(UpdateItemDto updatedItem)
+		{
+			var response = new ServiceResponse<GetItemDto>();
+			var item = await _context.Items.FirstOrDefaultAsync(x => x.Id == updatedItem.Id);
+
+			if (item is not null)
+			{
+				item.Title = updatedItem.Title;
+				item.Description = updatedItem.Description;
+				item.Price = updatedItem.Price;
+
+				await _context.SaveChangesAsync();
+				response.Data = _mapper.Map<GetItemDto>(item);
+			}
+
+			return response;
+		}
+
+		public async Task<ServiceResponse<List<GetItemDto>>> DeleteItem(int id)
+		{
+			var response = new ServiceResponse<List<GetItemDto>>();
+			var item = await _context.Items.FirstOrDefaultAsync(x => x.Id == id);
+
+			if (item is not null)
+			{
+				_context.Items.Remove(item);
+				await _context.SaveChangesAsync();
+				response.Data = await _context.Items.Select(x => _mapper.Map<GetItemDto>(x)).ToListAsync();
+			}
+
+			return response;
+		}
 	}
 }
