@@ -19,12 +19,14 @@ namespace API.Controllers
 			_itemService = itemService;
 		}
 
+		[AllowAnonymous]
         [HttpGet("GetAll")]
 		public async Task<ActionResult<ServiceResponse<List<GetItemDto>>>> GetAllItems()
 		{
 			return Ok(await _itemService.GetAllItems());
 		}
 
+		[AllowAnonymous]
 		[HttpGet("{id}")]
 		public async Task<ActionResult<ServiceResponse<GetItemDto>>> GetItem(int id)
 		{

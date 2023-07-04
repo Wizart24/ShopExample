@@ -39,6 +39,9 @@ namespace API.Services.ItemService
 			_context.Items.Add(item);
 			await _context.SaveChangesAsync();
 
+			var items = await _context.Items.ToListAsync();
+			response.Data = items.Select(x => _mapper.Map<GetItemDto>(x)).ToList();
+
 			return response;
 		}
 
